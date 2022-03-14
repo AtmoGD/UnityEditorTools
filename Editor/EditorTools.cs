@@ -12,7 +12,7 @@ namespace Bearbones
 {
     public class EditorTools : EditorWindow
     {
-        static string[] organizeOptions = new string[] { "By Type", "By Object" };
+        static string[] organizeOptions = new string[] { "None", "By Type", "By Object" };
         static int organizeSelection = 0;
 
         static string[] byTypeOptions = new string[] { "Scenes", "Scripts", "Visuals", "Visuals/Animations", "Visuals/Materials", "Visuals/Models", "Visuals/Prefabs", "Visuals/Sprite", "Visuals/Audio", "Visuals/Other" };
@@ -55,22 +55,6 @@ namespace Bearbones
         {
             if (GUILayout.Button("Create Default Folders By Type"))
                 CreateDefaultFoldersByType();
-
-            EditorGUILayout.Space(5);
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Parent Folder", EditorStyles.label);
-            byTypeIndex = EditorGUILayout.Popup(byTypeIndex, byTypeOptions);
-            EditorGUILayout.EndHorizontal();
-
-
-            EditorGUILayout.BeginHorizontal();
-            byTypeName = EditorGUILayout.TextField("Folder name:", byTypeName);
-
-            if (GUILayout.Button("Create new Folders"))
-                CreateNewObject();
-
-            EditorGUILayout.EndHorizontal();
         }
 
         private static void CreateByObjectGUI()

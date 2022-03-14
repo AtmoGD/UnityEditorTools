@@ -1,6 +1,6 @@
 {
   "name": "com.bearbones.editor_tools",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "tool",
   "displayName": "Editor Tools",
   "description": "A lot of helpful tools for the editor",
