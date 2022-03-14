@@ -1,0 +1,12 @@
+{
+  "name": "com.bearbones.editor_tools",
+  "version": "0.0.1",
+  "type": "tool",
+  "displayName": "Editor Tools",
+  "description": "A lot of helpful tools for the editor",
+  "unity": "2020.1",
+  "author": {
+    "name": "Dennis Hawran",
+    "email": "info@bearbones.de"
+  }
+}
