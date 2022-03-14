@@ -12,13 +12,15 @@ namespace Bearbones
 {
     public class EditorTools : EditorWindow
     {
-        static bool byTypeEnabled = false;
+        static string[] organizeOptions = new string[] { "By Type", "By Object" };
+        static int organizeSelection = 0;
+
         static string[] byTypeOptions = new string[] { "Scenes", "Scripts", "Visuals", "Visuals/Animations", "Visuals/Materials", "Visuals/Models", "Visuals/Prefabs", "Visuals/Sprite", "Visuals/Audio", "Visuals/Other" };
         static int byTypeIndex = 0;
         static string byTypeName = "New";
 
-        static bool byObjectEnabled = false;
-        static string newObjectName = "New Object";
+        static string byObjectName = "New Object";
+
 
         [MenuItem("Bearbones/Editor Tools")]
         public static void ShowWindow()
@@ -26,27 +28,31 @@ namespace Bearbones
             GetWindow(typeof(EditorTools));
         }
 
-        private void OnGUI() {
-            GUILayout.Label("Organize", EditorStyles.boldLabel);
-            byObjectEnabled = EditorGUILayout.BeginToggleGroup ("By Object", byObjectEnabled);
+        private void OnGUI()
+        {
+            CreateOrganizationGUI();
+        }
 
-            if (GUILayout.Button("Create Default Folders By Object"))
-                CreateDefaultFoldersByObject();
-
-            EditorGUILayout.Space(5);
-
+        private static void CreateOrganizationGUI()
+        {
             EditorGUILayout.BeginHorizontal();
-            newObjectName = EditorGUILayout.TextField ("Object name:", newObjectName);
-            if(GUILayout.Button("Create new object"))
-                CreateNewObject();
+            GUILayout.Label("Organize", EditorStyles.boldLabel);
+            organizeSelection = EditorGUILayout.Popup(organizeSelection, organizeOptions);
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.EndToggleGroup ();
+            switch (organizeOptions[organizeSelection])
+            {
+                case "By Type":
+                    CreateByTypeGUI();
+                    break;
+                case "By Object":
+                    CreateByObjectGUI();
+                    break;
+            }
+        }
 
-            EditorGUILayout.Space(35);
-
-            byTypeEnabled = EditorGUILayout.BeginToggleGroup ("By Type", byTypeEnabled);
-
+        private static void CreateByTypeGUI()
+        {
             if (GUILayout.Button("Create Default Folders By Type"))
                 CreateDefaultFoldersByType();
 
@@ -59,17 +65,28 @@ namespace Bearbones
 
 
             EditorGUILayout.BeginHorizontal();
-            byTypeName = EditorGUILayout.TextField ("Folder name:", byTypeName);
+            byTypeName = EditorGUILayout.TextField("Folder name:", byTypeName);
 
-            if(GUILayout.Button("Create new Folders"))
+            if (GUILayout.Button("Create new Folders"))
                 CreateNewObject();
 
             EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.EndToggleGroup ();
         }
 
-        [MenuItem("Tools/Create Default Folders By Type")]
+        private static void CreateByObjectGUI()
+        {
+            if (GUILayout.Button("Create Default Folders By Object"))
+                CreateDefaultFoldersByObject();
+
+            EditorGUILayout.Space(5);
+
+            EditorGUILayout.BeginHorizontal();
+            byObjectName = EditorGUILayout.TextField("Object name:", byObjectName);
+            if (GUILayout.Button("Create new object"))
+                CreateNewObject();
+            EditorGUILayout.EndHorizontal();
+        }
+
         public static void CreateDefaultFoldersByType()
         {
             List<string> paths = new List<string>();
@@ -95,7 +112,6 @@ namespace Bearbones
             Refresh();
         }
 
-        [MenuItem("Tools/Create Default Folders By Object"), ContextMenu("Create Default Folders By Object")]
         public static void CreateDefaultFoldersByObject()
         {
             List<string> paths = new List<string>();
@@ -109,25 +125,24 @@ namespace Bearbones
             Refresh();
         }
 
-        [MenuItem("Tools/Create new Object"), ContextMenu("Create new Object")]
-        public static void CreateNewObject() 
+        public static void CreateNewObject()
         {
             List<string> paths = new List<string>();
-            paths.Add("2 - Objects/" + newObjectName);
+            paths.Add("2 - Objects/" + byObjectName);
 
-            paths.Add("2 - Objects/" + newObjectName + "/Prefabs");
+            paths.Add("2 - Objects/" + byObjectName + "/Prefabs");
 
-            paths.Add("2 - Objects/" + newObjectName + "/Scripts");
+            paths.Add("2 - Objects/" + byObjectName + "/Scripts");
 
-            paths.Add("2 - Objects/" + newObjectName + "/Visuals");
-            paths.Add("2 - Objects/" + newObjectName + "/Visuals/Models");
-            paths.Add("2 - Objects/" + newObjectName + "/Visuals/Materials");
-            paths.Add("2 - Objects/" + newObjectName + "/Visuals/Sprites");
-            paths.Add("2 - Objects/" + newObjectName + "/Visuals/Animations");
+            paths.Add("2 - Objects/" + byObjectName + "/Visuals");
+            paths.Add("2 - Objects/" + byObjectName + "/Visuals/Models");
+            paths.Add("2 - Objects/" + byObjectName + "/Visuals/Materials");
+            paths.Add("2 - Objects/" + byObjectName + "/Visuals/Sprites");
+            paths.Add("2 - Objects/" + byObjectName + "/Visuals/Animations");
 
-            paths.Add("2 - Objects/" + newObjectName + "/Sound");
-            paths.Add("2 - Objects/" + newObjectName + "/Sound/Music");
-            paths.Add("2 - Objects/" + newObjectName + "/Sound/SFX");
+            paths.Add("2 - Objects/" + byObjectName + "/Sound");
+            paths.Add("2 - Objects/" + byObjectName + "/Sound/Music");
+            paths.Add("2 - Objects/" + byObjectName + "/Sound/SFX");
 
             CreateDirectories(paths);
             Refresh();
