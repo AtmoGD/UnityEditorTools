@@ -106,10 +106,11 @@ namespace Bearbones
             List<string> paths = new List<string>();
             paths.Add("2 - Objects/" + newObjectName);
 
+            paths.Add("2 - Objects/" + newObjectName + "/Prefabs");
+
             paths.Add("2 - Objects/" + newObjectName + "/Scripts");
 
             paths.Add("2 - Objects/" + newObjectName + "/Visuals");
-            paths.Add("2 - Objects/" + newObjectName + "/Visuals/Prefabs");
             paths.Add("2 - Objects/" + newObjectName + "/Visuals/Models");
             paths.Add("2 - Objects/" + newObjectName + "/Visuals/Materials");
             paths.Add("2 - Objects/" + newObjectName + "/Visuals/Sprites");
