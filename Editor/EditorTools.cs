@@ -94,7 +94,7 @@ namespace Bearbones
             paths.Add("1 - Scenes");
             paths.Add("2 - Objects");
             paths.Add("3 - Settings");
-            paths.Add("4 - Downloaded Assets");
+            paths.Add("DownloadedAssets");
 
             CreateDirectories(paths);
             Refresh();
