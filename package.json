@@ -1,5 +1,5 @@
 {
-  "name": "com.bearbones.editor_tools",
+  "name": "com.bearbones.editor.tools",
   "version": "0.1.0",
   "type": "tool",
   "displayName": "Editor Tools",

@@ -7,6 +7,8 @@ using static System.IO.Directory;
 using static System.IO.Path;
 using static UnityEngine.Application;
 using static UnityEditor.AssetDatabase;
+using UnityEditor.PackageManager.Requests;
+using UnityEditor.PackageManager;
 
 namespace Bearbones
 {
@@ -21,6 +23,10 @@ namespace Bearbones
 
         static string byObjectName = "New Object";
 
+        static AddRequest addRequest;
+
+        static ListRequest listRequest;
+
 
         [MenuItem("Bearbones/Editor Tools")]
         public static void ShowWindow()
@@ -31,6 +37,7 @@ namespace Bearbones
         private void OnGUI()
         {
             CreateOrganizationGUI();
+            CreatePackagesGUI();
         }
 
         private static void CreateOrganizationGUI()
@@ -50,6 +57,80 @@ namespace Bearbones
                     break;
             }
         }
+
+        private static void CreatePackagesGUI()
+        {
+            GUILayout.Label("Packages", EditorStyles.boldLabel);
+            if (GUILayout.Button("Add URP"))
+            {
+                AddPackage("com.unity.render-pipelines.universal");
+            }
+
+            if (GUILayout.Button("Add Cinemachine"))
+            {
+                AddPackage("com.unity.cinemachine");
+            }
+
+            if (GUILayout.Button("Add New Input System"))
+            {
+                AddPackage("com.unity.inputsystem");
+            }
+
+            if (GUILayout.Button("Add VFX Graph"))
+            {
+                AddPackage("com.unity.visualeffectgraph");
+            }
+
+            if (GUILayout.Button("Add Shader Graph"))
+            {
+                AddPackage("com.unity.shadergraph");
+            }
+
+            if (GUILayout.Button("Show installed packages"))
+            {
+                ListPackages();
+            }
+            
+        }
+
+        static void ListPackages()
+       {
+           listRequest = Client.List();    // List packages installed for the Project
+           EditorApplication.update += Progress;
+       }
+
+       static void Progress()
+       {
+           if (listRequest.IsCompleted)
+           {
+               if (listRequest.Status == StatusCode.Success)
+                   foreach (var package in listRequest.Result)
+                       Debug.Log("Package name: " + package.name);
+               else if (listRequest.Status >= StatusCode.Failure)
+                   Debug.Log(listRequest.Error.message);
+
+               EditorApplication.update -= Progress;
+           }
+       }
+
+        
+
+        private static void AddPackage(string _package) {
+            addRequest = Client.Add(_package);
+        }
+
+    //     static void Progress()
+    //    {
+    //        if (addRequest.IsCompleted)
+    //        {
+    //            if (addRequest.Status == StatusCode.Success)
+    //                Debug.Log("Installed: " + addRequest.Result.packageId);
+    //            else if (addRequest.Status >= StatusCode.Failure)
+    //                Debug.Log(addRequest.Error.message);
+
+    //            EditorApplication.update -= Progress;
+    //        }
+    //    }
 
         private static void CreateByTypeGUI()
         {
